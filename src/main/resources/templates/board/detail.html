@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>게시글 작성</title>
+</head>
+<body>
+<a href="/boards">게시글 목록</a>
+<div th:object="${board}">
+	<h1 th:text="*{title}">title</h1>
+	조회수: <span th:text="*{views}"></span>
+	<h2>content</h2>
+	<textarea th:text=*{content} cols="30" rows="10" readonly></textarea>
+</div>
+
+</body>
+</html>

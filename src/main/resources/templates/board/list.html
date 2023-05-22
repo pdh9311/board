@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>게시글 목록</title>
+<style>
+	ul > li {
+		display: inline-block;
+	}
+	
+	table {
+		border-collapse: collapse;
+	}
+	
+	table tr, table tr th, table tr td {
+		border: 1px solid black;
+	}
+</style>
+</head>
+<body>
+
+<h1>게시글 목록</h1>
+
+<a href="/board">게시글 생성</a>
+
+<table>
+	<tr>
+		<th>번호</th>
+		<th>제목</th>
+		<th>조회수</th>
+	</tr>
+	<tr th:each="board : ${boardList}">
+		<td th:text="${board.id}"></td>
+		<td>
+			<a th:href="@{/board/{id}(id = ${board.id})}" th:text="${board.title}"></a>
+		</td>
+		<td th:text="${board.views}"></td>
+	</tr>
+</table>
+<ul>
+	<li th:if="${paging.isPrev}">
+		<a th:href="@{/boards(page=${paging.prevPage})}">&lt;</a>	
+	</li>
+	
+	<th:block th:each="num : ${#numbers.sequence(paging.frontPage, paging.endPage)}">
+		<li th:if="${num == paging.currPage}" th:text="${num}"></li>
+		<a th:if="${num != paging.currPage}" th:href="@{/boards(page=${num})}" th:text="${num}"></a>
+	</th:block>
+	
+	
+	<li th:if="${paging.isNext}" >
+		<a th:href="@{/boards(page=${paging.nextPage})}">&gt;</a>
+	</li>
+	
+</ul>
+
+</body>
+</html>
