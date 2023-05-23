@@ -12,6 +12,30 @@
 	<h2>content</h2>
 	<textarea th:text=*{content} cols="30" rows="10" readonly></textarea>
 </div>
+<button class="modify">수정</button>
+<button class="delete">삭제</button>
 
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script th:inline="javascript">
+	const boardId = [[${board.id}]];
+	$('.modify').click(function() {
+		$(location).attr('href', 'http://localhost:8080/board/modify/' + boardId);
+	});
+
+	$('.delete').click(function() {
+		$.ajax({
+			method : 'DELETE',
+			url : '/board/' + boardId,
+			success: function (data) {
+				alert(data)
+				$(location).attr('href', 'http://localhost:8080/boards');
+			},
+			error: function (request, status, error) {
+				console.log("code : " + request.status  + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+			}
+		});
+	});
+	
+</script>
 </body>
 </html>

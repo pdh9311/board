@@ -5,14 +5,15 @@
 <title>게시글 작성</title>
 </head>
 <body>
-<a href="/boards">게시글 목록</a>
+<a href="/boards">게시글 수정</a>
 
-<form th:action th:object="${boardWriteForm}" method="post">
+<form th:action th:object="${board}" method="post">
+	<input type="hidden" name="_method" value = "put" />
 	<b>title: </b><input type="text" th:field=*{title} placeholder="제목을 입력하세요."/>
 	<div><b>content</b></div>
 	<textarea th:field=*{content} cols="30" rows="10"></textarea>
 	<hr />
-	<button type="submit">작성</button>
+	<button type="submit">수정완료</button>
 </form>
 
 </body>

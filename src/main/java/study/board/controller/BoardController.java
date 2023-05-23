@@ -5,17 +5,22 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import study.board.dto.BoardDto;
+import study.board.dto.BoardModifyForm;
 import study.board.dto.BoardWriteForm;
 import study.board.dto.Paging;
 import study.board.service.BoardService;
@@ -55,15 +60,15 @@ public class BoardController {
 		return "board/list";
 	}
 	
-	@GetMapping("/board")
+	@GetMapping("/board/write")
 	public String boardWriteForm(@ModelAttribute BoardWriteForm form) {
 		return "board/write";
 	}
 	
-	@PostMapping("/board")
+	@PostMapping("/board/write")
 	public String boardWrite(@ModelAttribute BoardWriteForm form) {
-		boardService.save(form.getTitle(), form.getContent());
-		return "redirect:/boards";	// TODO: 상세보기로 변경해야함.
+		Long id = boardService.save(form.getTitle(), form.getContent());
+		return "redirect:/board/" + id;
 	}
 	
 	@GetMapping("/board/{id}")
@@ -73,6 +78,30 @@ public class BoardController {
 		BoardDto boardDto = boardService.findById(id);
 		model.addAttribute("board", boardDto);
 		return "board/detail";
+	}
+	
+	@DeleteMapping("/board/{id}")
+	@ResponseBody
+	public ResponseEntity<String> boardDelete(@PathVariable("id") Long id) {
+		boardService.delete(id);
+		return ResponseEntity.ok().body("board num = " + id + "가 삭제되었습니다.");
+	}
+	
+	@GetMapping("/board/modify/{id}")
+	public String boardModifyForm(
+			@PathVariable("id") Long id,
+			Model model) {
+		BoardDto boardDto = boardService.findById(id);
+		model.addAttribute("board", boardDto);
+		return "board/modify";
+	}
+	
+	@PutMapping("/board/modify/{id}")
+	public String boardModify(
+			@PathVariable("id") Long id,
+			@ModelAttribute BoardModifyForm form) {
+		boardService.update(id, form.getTitle(), form.getContent());
+		return "redirect:/board/" + id;
 	}
 	
 }

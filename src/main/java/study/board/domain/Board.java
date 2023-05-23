@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class Board {
+public class Board extends BaseTime {
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

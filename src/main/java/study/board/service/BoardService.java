@@ -18,12 +18,14 @@ public class BoardService {
 	private final BoardRepository boardRepository;
 
 	// 게시판 생성 create
-	public void save(String title, String content) {
+	public Long save(String title, String content) {
 		Board board = Board.builder()
 				.title(title)
 				.content(content)
 				.build();
-		boardRepository.save(board);		
+		Board savedBoard = boardRepository.save(board);
+		return savedBoard.getId();
+		
 	}
 	
 	// 게시판 상세보기 read
