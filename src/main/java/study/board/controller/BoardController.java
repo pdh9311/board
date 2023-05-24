@@ -32,6 +32,7 @@ public class BoardController {
 	
 	private final BoardService boardService;
 	
+	// 게시글 목록 페이지 이동
 	@GetMapping("/boards")
 	public String boardList(
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
@@ -60,17 +61,20 @@ public class BoardController {
 		return "board/list";
 	}
 	
+	// 게시글 작성 페이지 이동
 	@GetMapping("/board/write")
 	public String boardWriteForm(@ModelAttribute BoardWriteForm form) {
 		return "board/write";
 	}
-	
+
+	// 게시글 작성 저장
 	@PostMapping("/board/write")
 	public String boardWrite(@ModelAttribute BoardWriteForm form) {
 		Long id = boardService.save(form.getTitle(), form.getContent());
 		return "redirect:/board/" + id;
 	}
 	
+	// 게시글 상세보기 페이지 이동
 	@GetMapping("/board/{id}")
 	public String boardDetail(
 			@PathVariable("id") Long id,
@@ -80,6 +84,7 @@ public class BoardController {
 		return "board/detail";
 	}
 	
+	// 게시글 삭제
 	@DeleteMapping("/board/{id}")
 	@ResponseBody
 	public ResponseEntity<String> boardDelete(@PathVariable("id") Long id) {
@@ -87,6 +92,7 @@ public class BoardController {
 		return ResponseEntity.ok().body("board num = " + id + "가 삭제되었습니다.");
 	}
 	
+	// 게시글 수정 페이지 이동
 	@GetMapping("/board/modify/{id}")
 	public String boardModifyForm(
 			@PathVariable("id") Long id,
@@ -96,6 +102,7 @@ public class BoardController {
 		return "board/modify";
 	}
 	
+	// 게시글 수정
 	@PutMapping("/board/modify/{id}")
 	public String boardModify(
 			@PathVariable("id") Long id,
